@@ -1,16 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 from bs4 import BeautifulSoup
 import re
 import requests
-
-
-# In[2]:
-
 
 def get_ugroup(url):
     #url = 'https://ugroupcu.com/building-list/'

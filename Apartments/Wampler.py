@@ -1,16 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[7]:
-
-
 from bs4 import BeautifulSoup
 import re
 import requests
-
-
-# In[8]:
-
 
 def get_wampler(url):
     #url = 'https://wamplerapartments.com/our-properties/'

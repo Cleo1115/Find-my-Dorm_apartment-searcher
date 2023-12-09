@@ -1,16 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[2]:
-
-
 from bs4 import BeautifulSoup
 import re
 import requests
-
-
-# In[3]:
-
 
 def get_MHM(url):
     #url = 'https://www.mhmproperties.com/apartments/?_sft_types=apartments'
