@@ -11,18 +11,45 @@ from geopy.geocoders import Nominatim
 from geopy.point import Point
 
 def Address_to_Location(address):
+    """
+        Convert the provided address to latitude and longitude coordinates.
+
+        Parameters:
+        - address (str): The address to be geocoded.
+
+        Returns:
+        - tuple: A tuple containing the latitude and longitude coordinates.
+
+        Example:
+        ```python
+        location = Address_to_Location("1600 Amphitheatre Parkway, Mountain View, CA")
+        print(location)  # Output: (37.423021, -122.083739)
+        ```
+    """
     full_address = address+', '+'IL'
-    #locator = Nominatim(use_agent = 'my_app')
     locator = Nominatim(user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'")
     location = locator.geocode(full_address)
     latitude, longitude = location.latitude, location.longitude
     return latitude, longitude
 
 def find_nearby_bus_stops(location, distance):
-    '''
-    location: (latitude, longitude) of the dorm
-    distance: Bus stops within this distance
-    '''
+    """
+        Find nearby bus stops within a specified distance from the given location.
+
+        Parameters:
+        - location (tuple): A tuple containing the latitude and longitude coordinates.
+        - distance (float): The distance within which to search for bus stops.
+
+        Returns:
+        - folium.Map: A Folium map with markers for the start point, bus stops, and optimized bus routes.
+
+        Example:
+        ```python
+        location = (40.11, -88.23)  # Example coordinates for an apartment near UIUC
+        bus_map = find_nearby_bus_stops(location, distance=500)
+        bus_map.save("bus_stops_map.html")
+        ```
+    """
     # Input the apartment/house's location (latitude, longtitude)
     DORM_LOCATION = location
     # Specify distance in meters
@@ -120,6 +147,22 @@ def find_nearby_bus_stops(location, distance):
     return m  
 
 def bus_stops_searcher(address, distance=500):
+    """
+        Search for nearby bus stops based on the provided address.
+
+        Parameters:
+        - address (str): The address for which to find nearby bus stops.
+        - distance (float, optional): The distance within which to search for bus stops (default is 500 meters).
+
+        Returns:
+        - folium.Map: A Folium map with markers for the start point, bus stops, and optimized bus routes.
+
+        Example:
+        ```python
+        bus_map = bus_stops_searcher("501 E. Healey", distance=500)
+        bus_map.save("custom_bus_map.html")
+        ```
+    """
     location = Address_to_Location(address)
     bus_map = find_nearby_bus_stops(location, distance = 500)
     return bus_map

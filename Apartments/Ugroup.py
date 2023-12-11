@@ -3,7 +3,23 @@ import re
 import requests
 
 def get_ugroup(url):
-    #url = 'https://ugroupcu.com/building-list/'
+    """
+        Scrape information about dorms or properties listed on the Ugroup website.
+
+        Parameters:
+        - url (str): The URL of the Ugroup website's building list.
+
+        Returns:
+        - list: A list of lists, where each inner list represents information about a dorm.
+
+        Example:
+        ```python
+        dorms_info = get_ugroup('https://ugroupcu.com/building-list/')
+        for dorm in dorms_info:
+            print(dorm)
+        ```
+    """
+
     session = requests.session()
     req_header = {'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',}
     name = 'Ugroup'
