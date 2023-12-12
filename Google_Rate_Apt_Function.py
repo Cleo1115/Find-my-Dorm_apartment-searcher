@@ -21,7 +21,7 @@ def dataframe_to_list(df):
 
 
 # Initialize Google Maps client
-gmaps = googlemaps.Client(key='AIzaSyDSh2nCPwoRNj2KiTZAvfEWzH7W7MmH-VE')  # input your Google API
+gmaps = googlemaps.Client(key='')  # input your Google API
 
 
 def get_place_rating(address):
