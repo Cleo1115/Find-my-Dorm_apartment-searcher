@@ -17,6 +17,9 @@ Before enrolling at UIUC, upperclassmen recommended choosing housing from specif
 3. **Transportation Visualization:**
    - Recognizing the importance of transportation, the project includes a visualization of nearby bus stops. Public transportation is crucial for students, especially those without cars.
 
+4. **Ranking Visualization:**
+   - To quickly identify the most popular apartments in Champaign, the final part of the analysis involves integrating additional data from Google Maps and visualizing the rankings.
+
 ## Project Packages
 
 This project utilizes several Python packages to perform web scraping, data analysis, visualization, and geocoding. Below is an overview of the key packages and their roles:
@@ -112,6 +115,12 @@ bus_map = bus_stops_searcher('501 E. Healey')
 ```
 <img width="827" alt="image" src="https://github.com/Cleo1115/Find-my-Dorm_apartment-searcher/assets/143035786/8b0dba02-6fbd-462e-9ba9-07b0f97a3c95">
 
+4. **Search Apartment Rankings:**
+```python
+Rated_apt = append_ratings_to_listings(All_apt)
+Ranked_apt = create_apartment_ranking_table(Rated_apt)
+```
+
 Note: Ensure that you have the required modules installed and that the necessary data sources are accessible. Adjust URLs, addresses, and numbers as needed for your specific use case.
 
 Feel free to customize these examples by changing the numbers to fit your criteria for exploring apartments and checking transportation conditions.
@@ -153,7 +162,7 @@ Feel free to customize these examples by changing the numbers to fit your criter
 ## Meet the Team
 
 - **[Cleo1115]:** Web Scraping and Transportation Visualization
-- **[Teammate 2 Name]:** Web Scraping and Apartment Ranking
+- **[Moiralala]:** Web Scraping and Apartment Ranking
 
 ## Future Enhancements
 

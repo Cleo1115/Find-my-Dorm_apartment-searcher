@@ -1,38 +1,27 @@
 import googlemaps
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 
 
-def combine_apartment_lists(scrapers):
-    """
-    Combines apartment listings from a list of scraper instances.
-    Keeps only one record per apartment name.
+# Function to convert DataFrame to list of comma-separated strings
+def dataframe_to_list(df):
+    # Replace 'Not Available' with an empty string 
+    df['Price'].replace('Not Available', '', inplace=True)
+    # Replace False in 'Availability' with an empty string
+    df['Availability'] = df['Availability'].apply(lambda x: x if x is not False else '')
+    # Convert 'Is_studio' from boolean to 'Yes'/'No'
+    df['Is_studio'] = df['Is_studio'].apply(lambda x: 'Yes' if x else 'No')
 
-    Args: scrapers (list): A list of scraper instances, each having a 'parse_data' method.
-
-    Returns: list[str]: A combined list of formatted string representations of Apartment objects from all scrapers,
-                   with duplicates removed based on apartment name.
-    """
-    combined_apartments = {}
-    for scraper in scrapers:
-        # Ensure the scraper has a 'parse_data' method
-        if hasattr(scraper, 'parse_data') and callable(getattr(scraper, 'parse_data')):
-            apartments = scraper.parse_data()
-            for apt in apartments:
-                # Format each Apartment object as a string
-                formatted_apt = (f"{apt.address}, {apt.price}, {apt.bedrooms}, {apt.bathrooms}, {apt.link}, "
-                                 f"{apt.available_date}, {apt.agency_name}, {apt.is_studio}")
-                # Use apartment address as the key to avoid duplicates
-                combined_apartments[apt.address] = formatted_apt
-        else:
-            print(f"Scraper {type(scraper).__name__} does not have a parse_data method.")
+    # Create a dictionary with the address as the key to avoid duplicates
+    combined_apartments = {row['Address']: f"{row['Address']}, {row['Price']}, {row['Bedroom']}, {row['Bathroom']}, {row['Link']}, {row['Availability']}, {row['Name']}, {row['Is_studio']}" for index, row in df.iterrows()}
 
     # Return the values of the dictionary, which are the unique listings
     return list(combined_apartments.values())
 
 
 # Initialize Google Maps client
-gmaps = googlemaps.Client(key='')  # input your Google API
+gmaps = googlemaps.Client(key='AIzaSyDSh2nCPwoRNj2KiTZAvfEWzH7W7MmH-VE')  # input your Google API
 
 
 def get_place_rating(address):
