@@ -39,14 +39,34 @@ class JSM(ApartmentScraper):
         return address, rent, bedrooms, bathrooms, link, available_date, self.agency_name, is_studio
 
     def parse_rent(self, rent_text):
-        """Parse rent from the given text, returns None if no units are available."""
+        """
+        Parse rent from the given text, returns None if no units are available.
+
+        >>> jsm = JSM('https://jsmliving.com/search-available-units', 'JSM')
+        >>> jsm.parse_rent("RENT: $1300 - $1600")
+        1600
+        >>> jsm.parse_rent("No Units Available")
+        """
         if 'No Units Available' in rent_text:
             return None
         rent = rent_text.split('RENT:')[1].split('-')[-1].replace('$', '').strip()
         return int(rent)
 
     def parse_bedrooms(self, article):
-        """Parse the number of bedrooms and determine if it's a studio."""
+        """
+        Parse the number of bedrooms and determine if it's a studio.
+
+        >>> from bs4 import BeautifulSoup
+        >>> jsm = JSM('https://jsmliving.com/search-available-units', 'JSM')
+        >>> html = '<div class="unit__card-bedrooms"><p>2 Bedrooms</p></div>'
+        >>> article = BeautifulSoup(html, 'html.parser')
+        >>> jsm.parse_bedrooms(article)
+        (2, False)
+        >>> html = '<div class="unit__card-bedrooms"><p>Studio</p></div>'
+        >>> article = BeautifulSoup(html, 'html.parser')
+        >>> jsm.parse_bedrooms(article)
+        (1, True)
+        """
         bedrooms_text = article.find('div', class_='unit__card-bedrooms').find('p').text
         bedrooms = int(bedrooms_text.split(' ')[0])
         is_studio = bedrooms == 0
@@ -55,9 +75,24 @@ class JSM(ApartmentScraper):
         return bedrooms, is_studio
 
     def parse_bathrooms(self, article):
-        """Parse the number of bathrooms."""
+        """
+        Parse the number of bathrooms.
+
+        >>> from bs4 import BeautifulSoup
+        >>> jsm = JSM('https://jsmliving.com/search-available-units', 'JSM')
+        >>> html = '<div class="unit__card-bathrooms"><p>2 Baths</p></div>'
+        >>> article = BeautifulSoup(html, 'html.parser')
+        >>> jsm.parse_bathrooms(article)
+        2.0
+        """
         bathrooms_text = article.find('div', class_='unit__card-bathrooms').find('p').text
         return float(bathrooms_text.split(' ')[0])
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
+
 
 """
 # Usage

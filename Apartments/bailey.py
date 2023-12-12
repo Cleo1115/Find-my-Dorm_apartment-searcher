@@ -56,23 +56,55 @@ class Bailey(ApartmentScraper):
 
     @staticmethod
     def slugify(address):
-        # Replace spaces and punctuation with URL-friendly characters
+        """
+                Replace spaces and punctuation in an address with URL-friendly characters.
+
+                >>> Bailey.slugify("123 Main St.")
+                '123-main-st'
+                """
         return address.lower().replace(' ', '-').replace('.', '').replace(',', '')
 
     @staticmethod
     def get_bedrooms(bedroom_text):
-        # Return 0 for 'Efficiency' or convert text to integer
-        return 0 if bedroom_text == 'Efficiency' else int(bedroom_text)
+        """
+        Return 0 for 'Efficiency' or convert text to integer.
+
+        >>> from bs4 import BeautifulSoup
+        >>> html = '<td class="column-1">1 Bedroom</td>'
+        >>> bedroom_text = BeautifulSoup(html, 'html.parser').text.strip()
+        >>> Bailey.get_bedrooms(bedroom_text)
+        1
+        >>> html = '<td class="column-1">Efficiency</td>'
+        >>> bedroom_text = BeautifulSoup(html, 'html.parser').text.strip()
+        >>> Bailey.get_bedrooms(bedroom_text)
+        0
+        """
+        return 0 if 'Efficiency' in bedroom_text else int(bedroom_text.split()[0])
 
     @staticmethod
     def get_price(price_text):
-        # Extract the price and convert to float
+        """
+                Extract the price from text and convert to float.
+
+                >>> Bailey.get_price('$1,200 - $1,500')
+                1500.0
+                """
         return float(price_text.split(' - ')[-1].replace('$', '').replace(',', ''))
 
     @staticmethod
     def get_available_date(availability_text):
-        # Return a fixed date if available or None
+        """
+                Return a fixed date if available or None.
+
+                >>> Bailey.get_available_date('Available')
+                '2024-08-01'
+                """
         return '2024-08-01' if availability_text == 'Available' else None
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
 
 
 """

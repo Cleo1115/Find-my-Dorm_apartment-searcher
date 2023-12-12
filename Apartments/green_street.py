@@ -26,14 +26,32 @@ class Green_Street(ApartmentScraper):
             return None  # Skip the div if any parsing errors occur
 
     def _extract_address(self, div):
-        """Extracts the address from a div element and removes the city name."""
+        """
+        Extracts the address from a div element and removes the city name.
+
+        >>> from bs4 import BeautifulSoup
+        >>> html = '<div class="property-item-title">123 Green St, Champaign  IL</div>'
+        >>> div = BeautifulSoup(html, 'html.parser')
+        >>> gs = Green_Street('https://www.greenstrealty.com/modules/extended/propertySearch', 'Green Street')
+        >>> gs._extract_address(div)
+        '123 Green St'
+        """
         address_div = div.find('div', class_='property-item-title')
         # Strip the city names from the address
         address = address_div.get_text(strip=True).split(',')[0].strip().replace('Champaign  IL', '').replace('Urbana  IL', '')
         return address
 
     def _get_link(self, div):
-        """Extract link to property."""
+        """
+        Extract link to property.
+
+        >>> from bs4 import BeautifulSoup
+        >>> html = '<div><a class="cms-btn cms-btn-primary" href="/property/123-green-st">Details</a></div>'
+        >>> div = BeautifulSoup(html, 'html.parser')
+        >>> gs = Green_Street('https://www.greenstrealty.com/modules/extended/propertySearch', 'Green Street')
+        >>> gs._get_link(div)
+        'https://www.greenstrealty.com/property/123-green-st'
+        """
         a_tag = div.find('a', class_='cms-btn cms-btn-primary')
         return f"https://www.greenstrealty.com{a_tag['href']}" if a_tag else None
 
@@ -46,6 +64,11 @@ class Green_Street(ApartmentScraper):
         rent = int(price_text.split('/')[0].replace('$', '').replace(',', '')) * (beds if '/Bed' in price_text else 1)
         is_studio = 'studio' in raw_bed_text
         return beds, baths, rent, is_studio
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
 
 
 """

@@ -13,14 +13,17 @@ class JSJ(ApartmentScraper):
         """
         Process the address string to modify its format.
 
-        This method keeps only the part before 'Street' or 'Avenue',
-        and replaces 'Street' with 'St', 'Avenue' with 'Ave'.
-
-        Args:
-            address (str): The original address string.
-
-        Returns:
-            str: The processed address string.
+        >>> jsj = JSJ('https://jsjmanagement.com/on-campus/listing/', 'JSJ')
+        >>> jsj.process_address("123 Main Street")
+        '123 Main St'
+        >>> jsj.process_address("456 Elm Avenue")
+        '456 Elm Ave'
+        >>> jsj.process_address("789 Oak Street-1")
+        '789 Oak St'
+        >>> jsj.process_address("101 Pine Street Apartment 5")
+        '101 Pine St'
+        >>> jsj.process_address("202 Birch Road")
+        '202 Birch Road'
         """
         address_parts = address.split()
         processed_parts = []
@@ -70,6 +73,12 @@ class JSJ(ApartmentScraper):
             # Create an Apartment object for each entry and add it to the list
             apartments.append(Apartment(address, price, bedrooms, bathrooms, link, avail_date, self.agency_name, is_studio))
         return apartments
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
+
 
 """
 # Usage
