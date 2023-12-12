@@ -120,6 +120,7 @@ bus_map = bus_stops_searcher('501 E. Healey')
 Rated_apt = append_ratings_to_listings(All_apt)
 Ranked_apt = create_apartment_ranking_table(Rated_apt)
 ```
+![img_1.png](img_1.png)
 
 Note: Ensure that you have the required modules installed and that the necessary data sources are accessible. Adjust URLs, addresses, and numbers as needed for your specific use case.
 
